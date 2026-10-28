@@ -2,22 +2,22 @@
 -- 로컬의 새 테이블에 최초 입력하는 용도입니다.
 
 -- 대분류
-INSERT INTO category (id, name, parent_id)
+INSERT INTO first_category (id, name)
 VALUES
-    (1, '이사/청소', NULL),
-    (2, '설치/수리', NULL),
-    (3, '인테리어', NULL),
-    (4, '이벤트/뷰티', NULL),
-    (5, '과외', NULL),
-    (6, '외주', NULL),
-    (7, '취업/직무', NULL),
-    (8, '취미/자기계발', NULL),
-    (9, '자동차', NULL),
-    (10, '법률/금융', NULL),
-    (11, '기타', NULL);
+    (1, '이사/청소'),
+    (2, '설치/수리'),
+    (3, '인테리어'),
+    (4, '이벤트/뷰티'),
+    (5, '과외'),
+    (6, '외주'),
+    (7, '취업/직무'),
+    (8, '취미/자기계발'),
+    (9, '자동차'),
+    (10, '법률/금융'),
+    (11, '기타');
 
 -- 소분류: 이사/청소
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (101, '이사', 1),
     (102, '입주/집 청소', 1),
@@ -27,7 +27,7 @@ VALUES
     (106, '철거/폐기', 1);
 
 -- 소분류: 설치/수리
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (107, '가전제품', 2),
     (108, '문/창문', 2),
@@ -36,7 +36,7 @@ VALUES
     (111, '기타 설치/수리', 2);
 
 -- 소분류: 인테리어
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (112, '종합 인테리어', 3),
     (113, '부분 인테리어', 3),
@@ -46,7 +46,7 @@ VALUES
     (117, '기타 시공', 3);
 
 -- 소분류: 이벤트/뷰티
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (118, '웨딩', 4),
     (119, '뷰티', 4),
@@ -59,7 +59,7 @@ VALUES
     (126, '행사 인력', 4);
 
 -- 소분류: 과외
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (127, '국내 입시', 5),
     (128, '유학 준비', 5),
@@ -74,7 +74,7 @@ VALUES
     (137, '아동 교육', 5);
 
 -- 소분류: 외주
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (138, '디자인 외주', 6),
     (139, '개발 외주', 6),
@@ -90,7 +90,7 @@ VALUES
     (149, '인사', 6);
 
 -- 소분류: 취업/직무
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (150, '취업 준비', 7),
     (151, '창업 준비', 7),
@@ -109,7 +109,7 @@ VALUES
     (164, '인사 관리', 7);
 
 -- 소분류: 취미/자기계발
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (165, '악기', 8),
     (166, '음악이론/보컬', 8),
@@ -132,20 +132,20 @@ VALUES
     (183, '기타 취미/자기계발', 8);
 
 -- 소분류: 자동차
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (184, '차량 관리', 9),
     (185, '자동차 매매', 9);
 
 -- 소분류: 법률/금융
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (186, '금융', 10),
     (187, '법률', 10),
     (188, '부동산', 10);
 
 -- 소분류: 기타
-INSERT INTO category (id, name, parent_id)
+INSERT INTO second_category (id, name, first_category_id)
 VALUES
     (189, '렌탈', 11),
     (190, '심리', 11),
@@ -182,24 +182,27 @@ VALUES
 -- 시·도 및 시·군·구를 2단계로 연결합니다. 일반구에는 시 이름을 보존합니다.
 -- 세종은 하위 시·군·구 없이 최상위 항목으로 저장합니다.
 -- code 컬럼에는 공식 10자리 코드를 문자열로 보존합니다.
-INSERT INTO region (id, code, name, parent_id)
+INSERT INTO first_region (id, code, name)
 VALUES
-    (1, '1100000000', '서울특별시', NULL),
-    (2, '1200000000', '전남광주통합특별시', NULL),
-    (3, '2600000000', '부산광역시', NULL),
-    (4, '2700000000', '대구광역시', NULL),
-    (5, '2800000000', '인천광역시', NULL),
-    (6, '3000000000', '대전광역시', NULL),
-    (7, '3100000000', '울산광역시', NULL),
-    (8, '3611000000', '세종특별자치시', NULL),
-    (9, '4100000000', '경기도', NULL),
-    (10, '4300000000', '충청북도', NULL),
-    (11, '4400000000', '충청남도', NULL),
-    (12, '4700000000', '경상북도', NULL),
-    (13, '4800000000', '경상남도', NULL),
-    (14, '5000000000', '제주특별자치도', NULL),
-    (15, '5100000000', '강원특별자치도', NULL),
-    (16, '5200000000', '전북특별자치도', NULL),
+    (1, '1100000000', '서울특별시'),
+    (2, '1200000000', '전남광주통합특별시'),
+    (3, '2600000000', '부산광역시'),
+    (4, '2700000000', '대구광역시'),
+    (5, '2800000000', '인천광역시'),
+    (6, '3000000000', '대전광역시'),
+    (7, '3100000000', '울산광역시'),
+    (8, '3611000000', '세종특별자치시'),
+    (9, '4100000000', '경기도'),
+    (10, '4300000000', '충청북도'),
+    (11, '4400000000', '충청남도'),
+    (12, '4700000000', '경상북도'),
+    (13, '4800000000', '경상남도'),
+    (14, '5000000000', '제주특별자치도'),
+    (15, '5100000000', '강원특별자치도'),
+    (16, '5200000000', '전북특별자치도');
+
+INSERT INTO second_region (id, code, name, first_region_id)
+VALUES
     (17, '1111000000', '종로구', 1),
     (18, '1114000000', '중구', 1),
     (19, '1117000000', '용산구', 1),
@@ -470,5 +473,7 @@ VALUES
     (284, '5280000000', '부안군', 16);
 
 -- H2 로컬: 고정 ID 시드 다음 번호부터 새 항목을 등록합니다.
-ALTER TABLE category ALTER COLUMN id RESTART WITH 209;
-ALTER TABLE region ALTER COLUMN id RESTART WITH 285;
+ALTER TABLE first_category ALTER COLUMN id RESTART WITH 12;
+ALTER TABLE second_category ALTER COLUMN id RESTART WITH 209;
+ALTER TABLE first_region ALTER COLUMN id RESTART WITH 17;
+ALTER TABLE second_region ALTER COLUMN id RESTART WITH 285;
