@@ -10,9 +10,12 @@ import com.grepp.efy.domain.estimate.question.QuestionService;
 import com.grepp.efy.domain.estimate.requestanswer.RequestAnswer;
 import com.grepp.efy.domain.estimate.requestanswer.RequestAnswerMapper;
 import com.grepp.efy.domain.estimate.requestanswer.RequestAnswerRepository;
+import com.grepp.efy.domain.estimate.requestanswer.RequestAnswerService;
+import com.grepp.efy.domain.estimate.requestanswer.dto.AnswerResponse;
 import com.grepp.efy.domain.estimate.servicerequest.dto.AnswerRequest;
 import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestCreateRequest;
 import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestCreateResponse;
+import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestResponse;
 import com.grepp.efy.domain.user.member.Member;
 import com.grepp.efy.domain.user.member.MemberRole;
 import com.grepp.efy.domain.user.member.MemberService;
@@ -35,12 +38,29 @@ public class ServiceRequestService {
 
     private final ServiceRequestRepository serviceRequestRepository;
     private final RequestAnswerRepository requestAnswerRepository;
+    private final RequestAnswerService requestAnswerService;
     private final MemberService memberService;
     private final SecondCategoryService categoryService;
     private final SecondRegionService regionService;
     private final QuestionService questionService;
     private final ServiceRequestMapper serviceRequestMapper;
     private final RequestAnswerMapper requestAnswerMapper;
+
+    public ServiceRequestResponse getRequest(Long memberId, Long requestId) {
+        Member member = memberService.getMemberEntity(memberId);
+        ServiceRequest request = getRequestEntity(requestId);
+        List<AnswerResponse> requestAnswerResponse = requestAnswerService.getRequestAnswerEntity(requestId);
+
+        if (!request.getMember().getId().equals(member.getId())) {
+            throw new BusinessException(FORBIDDEN_EXCEPTION);
+        }
+
+        if (!member.getRole().equals(MemberRole.USER)) {
+            throw new BusinessException(FORBIDDEN_EXCEPTION);
+        }
+
+        return serviceRequestMapper.toRequestResponse(member, request, requestAnswerResponse);
+    }
 
     @Transactional
     public ServiceRequestCreateResponse createRequest(Long memberId, ServiceRequestCreateRequest request) {
@@ -110,5 +130,10 @@ public class ServiceRequestService {
                 .filter(question -> question.getId().equals(questionId))
                 .findFirst()
                 .orElseThrow(() -> new BusinessException(QUESTION_NOT_FOUND_EXCEPTION));
+    }
+
+    private ServiceRequest getRequestEntity(Long requestId) {
+        return serviceRequestRepository.findById(requestId)
+                .orElseThrow(() -> new BusinessException(REQUEST_NOT_FOUND_EXCEPTION));
     }
 }

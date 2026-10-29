@@ -57,8 +57,10 @@ public enum ErrorCode {
     // ⑤ 견적 요청·매칭
     QUESTION_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "질문을 찾을 수 없습니다."),
     REQUIRED_ANSWER_MISSING_EXCEPTION(HttpStatus.BAD_REQUEST, "필수 질문에 모두 답변해주세요."),
+    REQUEST_ANSWER_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "요청서 답변을 찾을 수 없습니다."),
     DUPLICATE_SERVICE_REQUEST_EXCEPTION(HttpStatus.CONFLICT, "해당 카테고리에 이미 유효한 요청서가 존재합니다."),
     DUPLICATE_ANSWER_EXCEPTION(HttpStatus.BAD_REQUEST, "동일한 질문에 중복 답변할 수 없습니다."),
+    REQUEST_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND, "요청서를 찾을 수 없습니다."),
 
     // ⑥ 리뷰·찜·좋아요
 
