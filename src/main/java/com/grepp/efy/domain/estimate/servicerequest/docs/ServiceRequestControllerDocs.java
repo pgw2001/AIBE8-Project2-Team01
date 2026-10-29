@@ -2,9 +2,12 @@ package com.grepp.efy.domain.estimate.servicerequest.docs;
 
 import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestCreateRequest;
 import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestCreateResponse;
+import com.grepp.efy.domain.estimate.servicerequest.dto.ServiceRequestResponse;
 import com.grepp.efy.global.security.CustomUserDetails;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,24 @@ import org.springframework.web.bind.annotation.RequestBody;
         description = "서비스 요청서 작성 및 관리 API"
 )
 public interface ServiceRequestControllerDocs {
+
+    @Operation(
+            summary = "서비스 요청서 상세 조회",
+            description = "로그인한 일반 회원이 본인이 작성한 서비스 요청서의 상세 정보와 질문별 답변을 조회합니다."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "요청서 조회 성공"),
+            @ApiResponse(responseCode = "401", description = "인증되지 않은 사용자"),
+            @ApiResponse(responseCode = "403", description = "조회 권한 없음 (USER 권한이 아니거나 작성자 본인이 아닌 경우)"),
+            @ApiResponse(responseCode = "404", description = "존재하지 않는 요청서")
+    })
+    ResponseEntity<ServiceRequestResponse> getRequest(
+            @Parameter(hidden = true)
+            CustomUserDetails userDetails,
+
+            @Parameter(description = "조회할 서비스 요청서 ID", required = true, example = "1")
+            Long requestId
+    );
 
     @Operation(
             summary = "서비스 요청서 작성",
